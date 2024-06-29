@@ -1,0 +1,101 @@
+[gd_scene load_steps=4 format=3 uid="uid://dui17054qnnx3"]
+
+[ext_resource type="Script" path="res://addons/godot_rulebook/editor/core/editor_premise.gd" id="1_1itnc"]
+[ext_resource type="Theme" uid="uid://cvvfj8ffpw3np" path="res://addons/godot_rulebook/editor/theme.tres" id="1_ikrcw"]
+[ext_resource type="Texture2D" uid="uid://b1v7jayblixhl" path="res://addons/godot_rulebook/editor/assets/icons/remove.svg" id="2_lq5cg"]
+
+[node name="EditorPremise" type="HBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 309.0
+offset_bottom = -308.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 4
+theme = ExtResource("1_ikrcw")
+theme_override_constants/separation = 10
+script = ExtResource("1_1itnc")
+
+[node name="Attribute" type="Label" parent="."]
+layout_mode = 2
+text = "Attribute"
+
+[node name="AttributeOption" type="OptionButton" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+allow_reselect = true
+
+[node name="OperatorOption" type="OptionButton" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+selected = 0
+allow_reselect = true
+item_count = 6
+popup/item_0/text = "=="
+popup/item_0/id = 0
+popup/item_1/text = "!="
+popup/item_1/id = 1
+popup/item_2/text = ">"
+popup/item_2/id = 2
+popup/item_3/text = ">="
+popup/item_3/id = 3
+popup/item_4/text = "<"
+popup/item_4/id = 4
+popup/item_5/text = "<="
+popup/item_5/id = 5
+
+[node name="ConstantField" type="LineEdit" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+placeholder_text = "value"
+alignment = 1
+expand_to_text_length = true
+
+[node name="AttributeField" type="HBoxContainer" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Attribute" type="Label" parent="AttributeField"]
+layout_mode = 2
+text = "Attribute"
+
+[node name="AttributeOption" type="OptionButton" parent="AttributeField"]
+layout_mode = 2
+allow_reselect = true
+
+[node name="VariableField" type="LineEdit" parent="."]
+unique_name_in_owner = true
+auto_translate_mode = 1
+visible = false
+layout_mode = 2
+placeholder_text = " variable name "
+alignment = 1
+expand_to_text_length = true
+
+[node name="OperandTypeList" type="ItemList" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(420, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+allow_reselect = true
+allow_search = false
+auto_height = true
+item_count = 3
+max_columns = 3
+same_column_width = true
+icon_mode = 0
+item_0/text = "CONSTANT"
+item_1/text = "ATTRIBUTE"
+item_2/text = "VARIABLE"
+
+[node name="DeletePremise" type="Button" parent="."]
+layout_mode = 2
+size_flags_horizontal = 8
+icon = ExtResource("2_lq5cg")
+
+[connection signal="item_selected" from="OperandTypeList" to="." method="_on_operand_type_selected"]
+[connection signal="pressed" from="DeletePremise" to="." method="_on_delete_premise_pressed"]

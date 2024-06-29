@@ -14,10 +14,18 @@ config/name="Auto battler"
 config/features=PackedStringArray("4.3", "GL Compatibility")
 config/icon="res://icon.svg"
 
+[autoload]
+
+RulebooksManager="*res://addons/godot_rulebook/manager.gd"
+
 [display]
 
 window/size/viewport_width=1280
 window/size/viewport_height=720
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/godot_rulebook/plugin.cfg")
 
 [rendering]
 
