@@ -1,9 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://d1jns75bfim8g"]
+[gd_scene load_steps=11 format=3 uid="uid://d1jns75bfim8g"]
 
 [ext_resource type="Texture2D" uid="uid://df40tkle4gc8h" path="res://assets/frame/wood_frame.png" id="1_5eyqy"]
-[ext_resource type="Texture2D" uid="uid://d13g2snk8wtlb" path="res://assets/runes/rune_1.png" id="2_gcv8q"]
+[ext_resource type="Script" path="res://cards/card.gd" id="1_45dko"]
 [ext_resource type="Texture2D" uid="uid://c3c75nx5drb0i" path="res://assets/icons/sword.png" id="2_v2vl2"]
 [ext_resource type="Texture2D" uid="uid://nw2k0ipsb2gq" path="res://assets/icons/circle.png" id="3_huo5a"]
+[ext_resource type="Texture2D" uid="uid://r7y552lnfktc" path="res://assets/runes/rune_27.png" id="3_lamam"]
 [ext_resource type="Texture2D" uid="uid://bnoqqxsdnpipt" path="res://assets/icons/shield.png" id="4_dvklh"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kjcb1"]
@@ -21,19 +22,19 @@ font_size = 12
 outline_size = 1
 
 [node name="CardTemplate" type="AspectRatioContainer"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -82.0
-offset_top = -76.0
-offset_right = 48.0
-offset_bottom = 131.0
+anchors_preset = -1
+anchor_left = 0.482812
+anchor_top = 0.3875
+anchor_right = 0.517187
+anchor_bottom = 0.6125
+offset_left = 7.5
+offset_right = -7.5
 grow_horizontal = 2
 grow_vertical = 2
 ratio = 0.7
-stretch_mode = 1
+stretch_mode = 3
+script = ExtResource("1_45dko")
+metadata/_edit_use_anchors_ = true
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 layout_mode = 2
@@ -57,7 +58,7 @@ theme_override_constants/separation = 10
 [node name="Art" type="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
-texture = ExtResource("2_gcv8q")
+texture = ExtResource("3_lamam")
 expand_mode = 3
 stretch_mode = 5
 
@@ -75,6 +76,8 @@ theme_override_constants/separation = 30
 alignment = 1
 
 [node name="Attack" type="CenterContainer" parent="PanelContainer/MarginContainer/VBoxContainer/CombatAttributes"]
+unique_name_in_owner = true
+visible = false
 layout_mode = 2
 
 [node name="Sword" type="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer/CombatAttributes/Attack"]
@@ -104,17 +107,19 @@ layout_mode = 2
 text = "20"
 label_settings = SubResource("LabelSettings_4k46x")
 
-[node name="Defense" type="CenterContainer" parent="PanelContainer/MarginContainer/VBoxContainer/CombatAttributes"]
+[node name="Health" type="CenterContainer" parent="PanelContainer/MarginContainer/VBoxContainer/CombatAttributes"]
+unique_name_in_owner = true
+visible = false
 layout_mode = 2
 
-[node name="Shield" type="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer/CombatAttributes/Defense"]
+[node name="Shield" type="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer/CombatAttributes/Health"]
 auto_translate_mode = 1
 custom_minimum_size = Vector2(40, 0)
 layout_mode = 2
 texture = ExtResource("4_dvklh")
 expand_mode = 5
 
-[node name="Circle" type="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer/CombatAttributes/Defense"]
+[node name="Circle" type="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer/CombatAttributes/Health"]
 auto_translate_mode = 1
 modulate = Color(0.717647, 0.568627, 0.415686, 1)
 custom_minimum_size = Vector2(23, 0)
@@ -122,9 +127,13 @@ layout_mode = 2
 texture = ExtResource("3_huo5a")
 expand_mode = 5
 
-[node name="DefenseValue" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/CombatAttributes/Defense"]
+[node name="HealthValue" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/CombatAttributes/Health"]
 layout_mode = 2
 text = "20"
 label_settings = SubResource("LabelSettings_2ex3p")
 
-[node name="Components" type="Node" parent="."]
+[node name="Monitorables" type="Node" parent="."]
+unique_name_in_owner = true
+
+[connection signal="child_entered_tree" from="Monitorables" to="." method="add_monitorable"]
+[connection signal="child_exiting_tree" from="Monitorables" to="." method="remove_monitorable"]

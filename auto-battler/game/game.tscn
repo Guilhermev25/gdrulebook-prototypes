@@ -1,0 +1,74 @@
+[gd_scene load_steps=5 format=3 uid="uid://uhftuq6ondmh"]
+
+[ext_resource type="Script" path="res://game/game.gd" id="1_7ibc8"]
+[ext_resource type="Texture2D" uid="uid://dqhwd25fh51tf" path="res://assets/frame/paper_frame.png" id="1_dpx8c"]
+[ext_resource type="PackedScene" uid="uid://dwuvim14d2b7a" path="res://player/player_board.tscn" id="1_ktsqu"]
+[ext_resource type="Script" path="res://game/monitorable_game.gd" id="4_3adds"]
+
+[node name="Game" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource("1_7ibc8")
+combat_rulebook = "CombatRulebook"
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.85098, 0.803922, 0.686275, 1)
+
+[node name="Background" type="NinePatchRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_dpx8c")
+patch_margin_left = 100
+patch_margin_top = 100
+patch_margin_right = 100
+patch_margin_bottom = 100
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="TopPlayer" parent="CenterContainer/VBoxContainer" instance=ExtResource("1_ktsqu")]
+unique_name_in_owner = true
+layout_mode = 2
+side = "TOP"
+
+[node name="HSeparator" type="HSeparator" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 45
+
+[node name="BottomPlayer" parent="CenterContainer/VBoxContainer" instance=ExtResource("1_ktsqu")]
+unique_name_in_owner = true
+layout_mode = 2
+alignment = 2
+side = "BOTTOM"
+
+[node name="MonitorableGame" type="Node" parent="." node_paths=PackedStringArray("holder")]
+script = ExtResource("4_3adds")
+holder = NodePath("..")
+rulebook_name = "CombatRulebook"

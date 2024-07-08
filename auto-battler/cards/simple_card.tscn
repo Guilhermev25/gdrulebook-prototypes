@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=3 uid="uid://wnytuukrj0yw"]
+
+[ext_resource type="PackedScene" uid="uid://d1jns75bfim8g" path="res://cards/card_template.tscn" id="1_bi7yh"]
+[ext_resource type="Script" path="res://cards/monitorables/attack_card.gd" id="2_70qlr"]
+[ext_resource type="Texture2D" uid="uid://ihb5oodcdg7b" path="res://assets/runes/rune_34.png" id="2_c8q8j"]
+[ext_resource type="Script" path="res://cards/monitorables/attackable_card.gd" id="3_xq3vt"]
+
+[node name="SimpleCard" instance=ExtResource("1_bi7yh")]
+
+[node name="Art" parent="PanelContainer/MarginContainer/VBoxContainer" index="0"]
+texture = ExtResource("2_c8q8j")
+
+[node name="Description" parent="PanelContainer/MarginContainer/VBoxContainer" index="1"]
+text = "Simple card."
+
+[node name="AttackValue" parent="PanelContainer/MarginContainer/VBoxContainer/CombatAttributes/Attack" index="3"]
+text = "2"
+
+[node name="HealthValue" parent="PanelContainer/MarginContainer/VBoxContainer/CombatAttributes/Health" index="2"]
+text = "6"
+
+[node name="AttackCard" type="Node" parent="Monitorables" index="0" node_paths=PackedStringArray("holder")]
+script = ExtResource("2_70qlr")
+damage = 2
+holder = NodePath("../..")
+rulebook_name = "CombatRulebook"
+
+[node name="AttackableCard" type="Node" parent="Monitorables" index="1" node_paths=PackedStringArray("holder")]
+script = ExtResource("3_xq3vt")
+health = 6
+holder = NodePath("../..")
+rulebook_name = "CombatRulebook"

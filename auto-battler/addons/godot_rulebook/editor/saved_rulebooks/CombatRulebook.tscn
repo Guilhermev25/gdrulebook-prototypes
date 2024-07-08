@@ -1,0 +1,206 @@
+[gd_scene load_steps=6 format=3 uid="uid://bc2e6c6jv6386"]
+
+[ext_resource type="Script" path="res://addons/godot_rulebook/core/rulebook.gd" id="1_hdvwj"]
+[ext_resource type="Script" path="res://addons/godot_rulebook/core/rule.gd" id="2_oci01"]
+[ext_resource type="Script" path="res://addons/godot_rulebook/core/condition.gd" id="3_j2xsx"]
+[ext_resource type="Script" path="res://addons/godot_rulebook/core/predicate.gd" id="4_61y2d"]
+[ext_resource type="Script" path="res://addons/godot_rulebook/core/premise.gd" id="5_cw374"]
+
+[node name="CombatRulebook" type="Node" node_paths=PackedStringArray("rules")]
+script = ExtResource("1_hdvwj")
+rules = [NodePath("Chain iniciative effects"), NodePath("Resolve attack effect"), NodePath("Chain attack effect on turn start"), NodePath("Chain kill card effect"), NodePath("Resolve kill card"), NodePath("Chain game over effect"), NodePath("Resolve game over")]
+
+[node name="Chain iniciative effects" type="Node" parent="." node_paths=PackedStringArray("condition")]
+script = ExtResource("2_oci01")
+type = 2
+condition = NodePath("@Node@23306")
+resolution_path = "res://resolutions/chain/chain_iniciative.gd"
+
+[node name="@Node@23306" type="Node" parent="Chain iniciative effects" node_paths=PackedStringArray("predicates")]
+script = ExtResource("3_j2xsx")
+predicates = [NodePath("@Node@23307"), NodePath("@Node@23308")]
+
+[node name="@Node@23307" type="Node" parent="Chain iniciative effects/@Node@23306"]
+script = ExtResource("4_61y2d")
+monitorable_id = "effect"
+monitorable_type = "TurnStartEffect"
+
+[node name="@Node@23308" type="Node" parent="Chain iniciative effects/@Node@23306"]
+script = ExtResource("4_61y2d")
+monitorable_id = "card"
+monitorable_type = "IniciativeCard"
+
+[node name="Resolve attack effect" type="Node" parent="." node_paths=PackedStringArray("condition")]
+script = ExtResource("2_oci01")
+type = 1
+condition = NodePath("@Node@23309")
+resolution_path = "res://resolutions/resolve/resolve_attack.gd"
+
+[node name="@Node@23309" type="Node" parent="Resolve attack effect" node_paths=PackedStringArray("predicates")]
+script = ExtResource("3_j2xsx")
+predicates = [NodePath("@Node@23310"), NodePath("@Node@23313"), NodePath("@Node@23314")]
+
+[node name="@Node@23310" type="Node" parent="Resolve attack effect/@Node@23309" node_paths=PackedStringArray("premises")]
+script = ExtResource("4_61y2d")
+monitorable_id = "effect"
+monitorable_type = "AttackEffect"
+premises = [NodePath("@Node@23311"), NodePath("@Node@23312")]
+
+[node name="@Node@23311" type="Node" parent="Resolve attack effect/@Node@23309/@Node@23310"]
+script = ExtResource("5_cw374")
+monitorable_type = "AttackEffect"
+attribute = "source"
+operator = "=="
+operand_type = 2
+operand = "source"
+
+[node name="@Node@23312" type="Node" parent="Resolve attack effect/@Node@23309/@Node@23310"]
+script = ExtResource("5_cw374")
+monitorable_type = "AttackEffect"
+attribute = "target"
+operator = "=="
+operand_type = 2
+operand = "target"
+
+[node name="@Node@23313" type="Node" parent="Resolve attack effect/@Node@23309"]
+script = ExtResource("4_61y2d")
+monitorable_id = "target"
+monitorable_type = "AttackableCard"
+
+[node name="@Node@23314" type="Node" parent="Resolve attack effect/@Node@23309"]
+script = ExtResource("4_61y2d")
+monitorable_id = "source"
+monitorable_type = "AttackCard"
+
+[node name="Chain attack effect on turn start" type="Node" parent="." node_paths=PackedStringArray("condition")]
+script = ExtResource("2_oci01")
+type = 2
+condition = NodePath("@Node@23315")
+resolution_path = "res://resolutions/chain/chain_attack_turn_start.gd"
+
+[node name="@Node@23315" type="Node" parent="Chain attack effect on turn start" node_paths=PackedStringArray("predicates")]
+script = ExtResource("3_j2xsx")
+predicates = [NodePath("@Node@23316"), NodePath("@Node@23317"), NodePath("@Node@23318")]
+
+[node name="@Node@23316" type="Node" parent="Chain attack effect on turn start/@Node@23315"]
+script = ExtResource("4_61y2d")
+monitorable_id = "effect"
+monitorable_type = "TurnStartEffect"
+
+[node name="@Node@23317" type="Node" parent="Chain attack effect on turn start/@Node@23315"]
+script = ExtResource("4_61y2d")
+monitorable_id = "source"
+monitorable_type = "AttackCard"
+
+[node name="@Node@23318" type="Node" parent="Chain attack effect on turn start/@Node@23315"]
+script = ExtResource("4_61y2d")
+monitorable_id = "game"
+monitorable_type = "MonitorableGame"
+
+[node name="Chain kill card effect" type="Node" parent="." node_paths=PackedStringArray("condition")]
+script = ExtResource("2_oci01")
+type = 2
+condition = NodePath("@Node@23319")
+resolution_path = "res://resolutions/chain/chain_kill_card.gd"
+
+[node name="@Node@23319" type="Node" parent="Chain kill card effect" node_paths=PackedStringArray("predicates")]
+script = ExtResource("3_j2xsx")
+predicates = [NodePath("@Node@23320")]
+
+[node name="@Node@23320" type="Node" parent="Chain kill card effect/@Node@23319" node_paths=PackedStringArray("premises")]
+script = ExtResource("4_61y2d")
+monitorable_id = "card"
+monitorable_type = "AttackableCard"
+premises = [NodePath("@Node@23321")]
+
+[node name="@Node@23321" type="Node" parent="Chain kill card effect/@Node@23319/@Node@23320"]
+script = ExtResource("5_cw374")
+monitorable_type = "AttackableCard"
+attribute = "health"
+operator = "<="
+operand = "0"
+
+[node name="Resolve kill card" type="Node" parent="." node_paths=PackedStringArray("condition")]
+script = ExtResource("2_oci01")
+type = 1
+condition = NodePath("@Node@23322")
+resolution_path = "res://resolutions/resolve/resolve_kill_card.gd"
+
+[node name="@Node@23322" type="Node" parent="Resolve kill card" node_paths=PackedStringArray("predicates")]
+script = ExtResource("3_j2xsx")
+predicates = [NodePath("@Node@23323"), NodePath("@Node@23325")]
+
+[node name="@Node@23323" type="Node" parent="Resolve kill card/@Node@23322" node_paths=PackedStringArray("premises")]
+script = ExtResource("4_61y2d")
+monitorable_id = "effect"
+monitorable_type = "KillCardEffect"
+premises = [NodePath("@Node@23324")]
+
+[node name="@Node@23324" type="Node" parent="Resolve kill card/@Node@23322/@Node@23323"]
+script = ExtResource("5_cw374")
+monitorable_type = "KillCardEffect"
+attribute = "target"
+operator = "=="
+operand_type = 2
+operand = "target"
+
+[node name="@Node@23325" type="Node" parent="Resolve kill card/@Node@23322"]
+script = ExtResource("4_61y2d")
+monitorable_id = "target"
+monitorable_type = "AttackableCard"
+
+[node name="Chain game over effect" type="Node" parent="." node_paths=PackedStringArray("condition")]
+script = ExtResource("2_oci01")
+type = 2
+condition = NodePath("@Node@23326")
+resolution_path = "res://resolutions/chain/chain_game_over.gd"
+
+[node name="@Node@23326" type="Node" parent="Chain game over effect" node_paths=PackedStringArray("predicates")]
+script = ExtResource("3_j2xsx")
+predicates = [NodePath("@Node@23327"), NodePath("@Node@23329")]
+
+[node name="@Node@23327" type="Node" parent="Chain game over effect/@Node@23326" node_paths=PackedStringArray("premises")]
+script = ExtResource("4_61y2d")
+monitorable_id = "loser"
+monitorable_type = "MonitorablePlayer"
+premises = [NodePath("@Node@23328")]
+
+[node name="@Node@23328" type="Node" parent="Chain game over effect/@Node@23326/@Node@23327"]
+script = ExtResource("5_cw374")
+monitorable_type = "MonitorablePlayer"
+attribute = "card_count"
+operator = "=="
+operand = "0"
+
+[node name="@Node@23329" type="Node" parent="Chain game over effect/@Node@23326" node_paths=PackedStringArray("premises")]
+script = ExtResource("4_61y2d")
+monitorable_id = "winner"
+monitorable_type = "MonitorablePlayer"
+premises = [NodePath("@Node@23330")]
+
+[node name="@Node@23330" type="Node" parent="Chain game over effect/@Node@23326/@Node@23329"]
+script = ExtResource("5_cw374")
+monitorable_type = "MonitorablePlayer"
+attribute = "card_count"
+operator = ">"
+operand = "0"
+
+[node name="Resolve game over" type="Node" parent="." node_paths=PackedStringArray("condition")]
+script = ExtResource("2_oci01")
+type = 1
+condition = NodePath("@Node@23331")
+resolution_path = "res://resolutions/resolve/resolve_game_over.gd"
+
+[node name="@Node@23331" type="Node" parent="Resolve game over" node_paths=PackedStringArray("predicates")]
+script = ExtResource("3_j2xsx")
+predicates = [NodePath("@Node@23332"), NodePath("@Node@23333")]
+
+[node name="@Node@23332" type="Node" parent="Resolve game over/@Node@23331"]
+script = ExtResource("4_61y2d")
+monitorable_id = "effect"
+monitorable_type = "GameOverEffect"
+
+[node name="@Node@23333" type="Node" parent="Resolve game over/@Node@23331"]
+script = ExtResource("4_61y2d")
+monitorable_id = "game"
+monitorable_type = "MonitorableGame"

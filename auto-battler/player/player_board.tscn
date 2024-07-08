@@ -1,0 +1,53 @@
+[gd_scene load_steps=5 format=3 uid="uid://dwuvim14d2b7a"]
+
+[ext_resource type="Script" path="res://player/player_board.gd" id="1_uqcqr"]
+[ext_resource type="Texture2D" uid="uid://b4ki7clslx1lw" path="res://assets/icons/stone_circle.png" id="2_4vb1w"]
+[ext_resource type="PackedScene" uid="uid://wnytuukrj0yw" path="res://cards/simple_card.tscn" id="3_ob5dt"]
+[ext_resource type="Script" path="res://player/monitorable_player.gd" id="4_qxyqv"]
+
+[node name="PlayerBoard" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 6
+size_flags_vertical = 6
+theme_override_constants/separation = 30
+script = ExtResource("1_uqcqr")
+
+[node name="Icon" type="TextureRect" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("2_4vb1w")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="CardsContainer" type="HBoxContainer" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 159)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+alignment = 1
+
+[node name="SimpleCard" parent="CardsContainer" instance=ExtResource("3_ob5dt")]
+layout_mode = 2
+
+[node name="SimpleCard2" parent="CardsContainer" instance=ExtResource("3_ob5dt")]
+layout_mode = 2
+
+[node name="SimpleCard3" parent="CardsContainer" instance=ExtResource("3_ob5dt")]
+layout_mode = 2
+
+[node name="MonitorablePlayer" type="Node" parent="." node_paths=PackedStringArray("holder")]
+unique_name_in_owner = true
+script = ExtResource("4_qxyqv")
+holder = NodePath("..")
+rulebook_name = "CombatRulebook"
+
+[connection signal="child_entered_tree" from="CardsContainer" to="." method="increase_card_count"]
+[connection signal="child_exiting_tree" from="CardsContainer" to="." method="decrease_card_count"]
